@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Apotik</title>
+    <title>Apotek | Agus Tamayasa</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -14,7 +14,7 @@
     <!--Header-->
     <nav class="bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="https://flowbite.com/" class="flex items-center">
+            <a href="index.html" class="flex items-center">
                 <span
                     class="self-center text-2xl font-semibold whitespace-nowrap text-blue-800">Tam<span>Apotek</span></span>
             </a>
@@ -82,7 +82,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <!-- Kolom Chart -->
@@ -151,9 +150,7 @@
                                 <button @click="terapkanDiskon"
                                     class="px-4 py-2 bg-blue-500 text-white rounded-md">Terapkan</button>
                             </span>
-
                         </div>
-
                     </div>
                     <hr class="my-1">
                     <div class="mt-4 text-lg font-semibold px-5">Total Diskon: Rp{{ potonganHarga }}</div>
@@ -163,13 +160,9 @@
                             Checkout
                         </button>
                     </div>
-
                 </div>
-
             </div>
         </div>
-
-
 
         <section id="table" class="bg-gray-50">
             <div class="container">
@@ -216,20 +209,10 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
         </section>
     </div>
 
-
-
-
-    </div>
-
-
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
         new Vue({
             el: '#app',
@@ -282,8 +265,6 @@
                         harga: 25000,
                         image: 'img/kalpanax.png',
                     },
-
-
                 ],
                 keranjang: [],
                 historiTransaksi: [],
@@ -353,6 +334,7 @@
                             barangDibeli: [...this.keranjang],
                         };
                         this.historiTransaksi.push(transaksi);
+                        this.potonganHarga = 0;
                         this.keranjang = [];
                         alert('Checkout berhasil! Total belanja: Rp ' + totalHargaBelanja);
                     }
@@ -361,7 +343,6 @@
             },
         });
     </script>
-
 </body>
 
 </html>
