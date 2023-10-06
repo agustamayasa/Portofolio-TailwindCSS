@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Apotik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body class="bg-gray-100">
+
+    <!--Header-->
+    <nav class="bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="https://flowbite.com/" class="flex items-center">
+                <span
+                    class="self-center text-2xl font-semibold whitespace-nowrap text-blue-800">Tam<span>Apotek</span></span>
+            </a>
+            <div class="flex md:order-2">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 1h15M1 7h15M1 13h15" />
+                </svg>
+                </button>
+            </div>
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+                <ul
+                    class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white">
+                    <li>
+                        <a href="#"
+                            class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 hover:text-blue-700">Home</a>
+                    </li>
+                    <li>
+                        <a href="#table"
+                            class="block py-2 pl-3 pr-4 text-gray-900 rounded hover-bg-gray-100 hover:text-blue-700">Tabel
+                            Transaksi</a>
+                    </li>
+                    <li>
+                        <a href="index.html"
+                            class="block py-2 pl-3 pr-4 text-gray-900 rounded hover-bg-gray-100 hover:text-blue-700">Portofolio
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!--Header-->
+
+
+    <div id="app">
+        <div class="container">
+            <div class="my-20 mx-20 flex gap-4">
+                <!-- Kolom Etalase -->
+                <div class="w-2/3 border px-5 py-6 bg-white ">
+                    <h1 class="text-2xl font-bold mb-10 text-center">Daftar Obat</h1>
+                    <div>
+                        <div class="mt-4 mb-4">
+                            <input v-model="search" type="text" placeholder="Cari Obat Generik..."
+                                class="border p-2 w-full mb-10 rounded">
+                        </div>
+                    </div>
+                    <!-- Komponen daftar obat -->
+                    <div class="grid grid-cols-4 gap-4 justify-center">
+                        <div v-for="obat in filteredObat" :key="obat.id"
+                            class="obat bg-white rounded-lg shadow p-4 transform transition duration-500 hover:scale-105 border">
+                            <img :src="obat.image" alt="Gambar Obat"
+                                class="w-full h-40 object-cover rounded-t-lg border">
+                            <div class="p-4">
+                                <h2 class="text-lg font-semibold">{{ obat.nama }}</h2>
+                                <p class="text-gray-600">Rp {{ obat.harga }}</p>
+                                <div class="mt-4">
+                                    <button @click="tambahKeKeranjang(obat)"
+                                        class="bg-blue-500 text-white px-2 py-2 rounded w-full">
+                                        Pesan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Kolom Chart -->
+                <div class="w-1/3 border bg-white h-auto">
+                    <div class="px-5 py-5">
+                        <h2 class="text-xl font-bold text-center">Keranjang Belanja</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class=table-auto">
+                            <thead>
+                                <tr>
+                                    <th class="w-1/6">Gambar</th>
+                                    <th class="w-1/6">Nama Obat</th>
+                                    <th class="w-1/6">Harga</th>
+                                    <th class="w-1/6">Qty</th>
+                                    <th class="w-1/6">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, index) in keranjang" :key="item.obat.id" class="border-b border-t">
+                                    <td class="text-center"><img :src="item.obat.image" alt="Gambar Obat"
+                                            class="px-4 py-2 w-32 h-16">
+                                    </td>
+                                    <td class="px-1 py-2 text-center text-sm">{{ item.obat.nama }}</td>
+                                    <td class="px-3 py-2 text-center text-sm">Rp {{ item.obat.harga }}</td>
+                                    <td class="px-4 py-2 text-center">
+                                        <span class="flex items-center space-x-2">
+                                            <button @click="kurangiDariKeranjang(index)"
+                                                class="px-2 py-1 bg-white text-black border border-gray-400 rounded hover:bg-blue-50">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M20 12H4"></path>
+                                                </svg>
+                                            </button>
+                                            <span class="text-gray-700">{{ item.qty }}</span>
+                                            <button @click="tambahKeKeranjang(item.obat)"
+                                                class="px-2 py-1 bg-white text-black border border-gray-400 rounded hover:bg-blue-50">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-2 w-40 max-w-2/5">
+                                        <button @click="hapusDariKeranjang(index)"
+                                            class="bg-red-500 text-white px-2 py-1 ml-2 rounded mb-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12"></path>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mb-4">
+                        <div class="m-4 ">
+                            <label for="kodeDiskon" class="text-sm">Kode Diskon:</label>
+                            <input type="text" v-model="kodeDiskon" id="kodeDiskon" class="p-2 border rounded-md my-2">
+                            <span>
+                                <button @click="terapkanDiskon"
+                                    class="px-4 py-2 bg-blue-500 text-white rounded-md">Terapkan</button>
+                            </span>
+
+                        </div>
+
+                    </div>
+                    <hr class="my-1">
+                    <div class="mt-4 text-lg font-semibold px-5">Total Diskon: Rp{{ potonganHarga }}</div>
+                    <div class="mt-4 text-lg font-semibold px-5">Total Harga: Rp {{ totalHarga }}</div>
+                    <div class="px-5 mt-4">
+                        <button @click="checkout" class="bg-blue-500 hover:bg-blue-600 px-8 py-4 text-white rounded">
+                            Checkout
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <section id="table" class="bg-gray-50">
+            <div class="container">
+                <div class="max-w-7xl mx-auto pt-16 pb-20">
+                    <h2 class="text-xl font-bold text-center pb-10">Table Histori Transaksi Obat</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white text-left shadow-md">
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th class="px-4 py-2">Tanggal</th>
+                                    <th class="px-4 py-2">Nama Obat</th>
+                                    <th class="px-4 py-2">Harga</th>
+                                    <th class="px-4 py-2">Qty</th>
+                                    <th class="px-4 py-2">Total Harga</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(transaksi, index) in historiTransaksi" :key="index"
+                                    class="hover:bg-gray-100">
+                                    <td class="border px-4 py-2">{{ transaksi.tanggal }}</td>
+                                    <td class="border px-4 py-2">
+                                        <ul>
+                                            <li v-for="(item, i) in transaksi.barangDibeli" :key="i">
+                                                {{ item.obat.nama }}
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <ul>
+                                            <li v-for="(item, i) in transaksi.barangDibeli" :key="i">
+                                                Rp {{ item.obat.harga }}
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <ul>
+                                            <li v-for="(item, i) in transaksi.barangDibeli" :key="i">
+                                                {{ item.qty }} pcs
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td class="border px-4 py-2">Rp {{ transaksi.totalHarga }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+        </section>
+    </div>
+
+
+
+
+    </div>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                daftarObat: [{
+                        id: 1,
+                        nama: 'Paracetamol',
+                        harga: 8000,
+                        image: 'img/paracetamol.jpg',
+                    },
+                    {
+                        id: 2,
+                        nama: 'Celery',
+                        harga: 75000,
+                        image: 'img/celery.png',
+                    },
+                    {
+                        id: 3,
+                        nama: 'Oralit',
+                        harga: 45000,
+                        image: 'img/oralit.png',
+                    },
+                    {
+                        id: 4,
+                        nama: 'Pacekap',
+                        harga: 85000,
+                        image: 'img/pacekap.png',
+                    },
+                    {
+                        id: 5,
+                        nama: 'Antasida',
+                        harga: 12000,
+                        image: 'img/antasida.png',
+                    },
+                    {
+                        id: 6,
+                        nama: 'Propranolol',
+                        harga: 16000,
+                        image: 'img/propranolol.png',
+                    },
+                    {
+                        id: 7,
+                        nama: 'Lasix',
+                        harga: 18000,
+                        image: 'img/lasix.png',
+                    },
+                    {
+                        id: 8,
+                        nama: 'Kalpanax',
+                        harga: 25000,
+                        image: 'img/kalpanax.png',
+                    },
+
+
+                ],
+                keranjang: [],
+                historiTransaksi: [],
+                search: "",
+                potonganHarga: 0,
+                kodeDiskon: "",
+            },
+            computed: {
+                totalHarga() {
+                    return this.keranjang.reduce((total, item) => total + item.obat.harga * item.qty, 0);
+                },
+                filteredObat() {
+                    return this.daftarObat.filter(obat =>
+                        obat.nama.toLowerCase().includes(this.search.toLowerCase())
+                    );
+                },
+                potonganHarga() {
+                    if (this.kodeDiskon === "SEHAT") {
+                        return this.totalHarga * 0.15; // 15% potongan
+                    } else {
+                        return 0;
+                    }
+                },
+            },
+            methods: {
+                tambahKeKeranjang(obat) {
+                    const itemIndex = this.keranjang.findIndex((item) => item.obat.id === obat.id);
+                    if (itemIndex !== -1) {
+                        this.keranjang[itemIndex].qty++;
+                    } else {
+                        this.keranjang.push({
+                            obat,
+                            qty: 1,
+                        });
+                    }
+                },
+                kurangiDariKeranjang(index) {
+                    if (this.keranjang[index].qty > 1) {
+                        this.keranjang[index].qty--;
+                    } else {
+                        this.keranjang.splice(index, 1);
+                    }
+                },
+                hapusDariKeranjang(index) {
+                    this.keranjang.splice(index, 1);
+                },
+                terapkanDiskon() {
+                    if (this.kodeDiskon.toUpperCase() === "SEHAT") {
+                        this.potonganHarga = this.totalHarga * 0.15;
+                        this.totalHarga -= this.potonganHarga;
+                        this.count++;
+                        this.kodeDiskon = "";
+                        alert("Diskon SEHAT 15% dari total harga berhasil diterapkan!");
+                    } else {
+                        alert("Kode diskon tidak valid");
+                    }
+                },
+                checkout() {
+                    if (this.keranjang.length === 0) {
+                        alert('Keranjang belanja kosong. Tambahkan obat ke keranjang terlebih dahulu.');
+                    } else {
+                        let totalHargaBelanja = this
+                            .totalHarga;
+                        const transaksi = {
+                            tanggal: new Date().toLocaleString(),
+                            totalHarga: totalHargaBelanja,
+                            barangDibeli: [...this.keranjang],
+                        };
+                        this.historiTransaksi.push(transaksi);
+                        this.keranjang = [];
+                        alert('Checkout berhasil! Total belanja: Rp ' + totalHargaBelanja);
+                    }
+                },
+
+            },
+        });
+    </script>
+
+</body>
+
+</html>
